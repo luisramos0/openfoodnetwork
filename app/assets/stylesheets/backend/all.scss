@@ -12,8 +12,13 @@
  *= require shared/ng-tags-input.min
 
  *= require_self
+  *= require foundation
+ *= require_tree .
 */
 
 @import 'variables';
 @import 'components/*';
 @import '*';
+
+@import "foundation_and_overrides";
+@import 'foundation-icons';
