@@ -133,6 +133,11 @@ GIT
       activemodel (>= 3.0)
       railties (>= 3.0)
 
+PATH
+  remote: engines/web
+  specs:
+    web (0.0.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -802,6 +807,7 @@ DEPENDENCIES
   uglifier (>= 1.0.3)
   unicorn
   unicorn-rails
+  web!
   webmock
   whenever
   wicked_pdf
