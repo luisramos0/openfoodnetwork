@@ -37,3 +37,11 @@ $dark-grey: #333;
 $light-grey: #ddd;
 $black: #000;
 $white: #fff;
+
+// Configure colors for CSS in Web engine
+
+$ofn-web-cookies-banner-background-color: $dark-grey;
+$ofn-web-cookies-banner-button-background-color: $clr-turquoise;
+$ofn-web-cookies-banner-text-color: $white;
+$ofn-web-cookies-policy-modal-background-color: $disabled-light;
+$ofn-web-cookies-policy-modal-border-bottom-color: $disabled-light;

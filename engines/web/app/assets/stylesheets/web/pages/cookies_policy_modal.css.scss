@@ -1,8 +1,6 @@
-@import 'darkswarm/branding';
-
 .cookies-policy-modal {
-  background: $disabled-light;
-  border-bottom-color: $disabled-light;
+  background: $ofn-web-cookies-policy-modal-background-color;
+  border-bottom-color: $ofn-web-cookies-policy-modal-border-bottom-color;
 
   table {
     width: 100%;
