@@ -9,7 +9,7 @@
     = menu_item :bulk_order_management, label: "Bulk Management", :match_path => '/orders/bulk_management'
 
   = menu_group :products, :icon => 'icon-th-large' do
-    = menu_item :products, url: bulk_edit_admin_products_path, :match_path => '/products'
+    -# = menu_item :products, url: bulk_edit_admin_products_path, :match_path => '/products'
     = menu_item :variant_overrides, label: "Overrides", url: main_app.admin_variant_overrides_path, match_path: '/variant_overrides'
 
   = menu_item :reports, :icon => 'icon-file'
