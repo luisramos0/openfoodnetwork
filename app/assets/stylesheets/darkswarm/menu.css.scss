@@ -21,6 +21,14 @@ nav.top-bar {
   .top-bar__current-hub-prefix {
     display: none;
   }
+
+  .top-bar__current-hub-name {
+    display: inline-block;
+    max-width: 10em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 
 .top-bar-section ul li > a.top-bar__menu-item-with-icon {

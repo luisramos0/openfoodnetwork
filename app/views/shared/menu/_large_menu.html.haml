@@ -32,6 +32,6 @@
           %span{ class: "top-bar__current-hub-prefix" }
             = t 'label_shopping'
             = '@'
-          %span {{ CurrentHub.hub.name | truncate:25 }}
+          %span{ class: "top-bar__current-hub-name" } {{ CurrentHub.hub.name | truncate:25 }}
       %li.cart{"ng-cloak" => true}
         = render partial: "shared/menu/cart"
