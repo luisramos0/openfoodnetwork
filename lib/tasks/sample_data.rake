@@ -42,7 +42,7 @@ namespace :ofn do
 
     products = ProductFactory.new.create_samples(enterprises)
 
-    InventoryFactory.new.create_samples(products)
+    # InventoryFactory.new.create_samples(products)
 
     OrderCycleFactory.new.create_samples
 
