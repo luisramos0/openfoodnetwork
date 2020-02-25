@@ -159,6 +159,21 @@ module Spree
       def stripe_provider?(provider)
         provider.name.ends_with?("StripeConnect", "StripeSCA")
       end
+
+      # Merge payment method params with gateway params like :gateway_stripe_connect
+      # Also, remove password if present and blank
+      def params_for_update
+        gateway_params = params[ActiveModel::Naming.param_key(@payment_method)] || {}
+        params_for_update = payment_method_params.merge(gateway_params)
+
+        params_for_update.each do |key, _value|
+          if key.include?("password") && params_for_update[key].blank?
+            params_for_update.delete(key)
+          end
+        end
+
+        params_for_update
+      end
     end
   end
 end
