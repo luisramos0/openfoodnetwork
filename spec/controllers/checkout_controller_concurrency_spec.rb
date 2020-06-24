@@ -16,6 +16,7 @@ describe CheckoutController, concurrency: true, type: :controller do
   let(:address) { create(:address) }
   let(:payment_method) { create(:payment_method, distributors: [distributor]) }
   let(:breakpoint) { Mutex.new }
+  let!(:shipping_method) { create(:shipping_method, distributors: [distributor]) }
 
   let(:address_params) { address.attributes.except("id") }
   let(:order_params) {
@@ -32,19 +33,19 @@ describe CheckoutController, concurrency: true, type: :controller do
   }
 
   before do
-    # Create a valid order ready for checkout:
-    create(:shipping_method, distributors: [distributor])
+    # Create a valid order ready for checkout
     variant = order_cycle.variants_distributed_by(distributor).first
     order.line_items << create(:line_item, variant: variant)
 
-    # Set up controller environment:
-    session[:order_id] = order.id
+    # Set up controller environment
     allow(controller).to receive(:spree_current_user).and_return(order.user)
     allow(controller).to receive(:current_distributor).and_return(order.distributor)
     allow(controller).to receive(:current_order_cycle).and_return(order.order_cycle)
   end
 
   it "handles two concurrent orders successfully" do
+    session[:order_id] = order.id
+
     # New threads start running straight away. The breakpoint is after loading
     # the order and before advancing the order's state and making payments.
     breakpoint.lock
@@ -91,5 +92,80 @@ describe CheckoutController, concurrency: true, type: :controller do
     expect(response.body).to eq({ path: spree.order_path(order) }.to_json)
     expect(order.payments.count).to eq 1
     expect(order.completed?).to be true
+  end
+
+  it "handles two concurrent orders with insuficcient stock for both" do
+    order2 = create(:order, order_cycle: order_cycle, distributor: distributor)
+    variant = order_cycle.variants_distributed_by(distributor).first
+    order2.line_items << create(:line_item, variant: variant)
+    order2.select_shipping_method(shipping_method.id)
+
+    order.line_items.first.update quantity: 3
+    order2.line_items.first.update quantity: 3
+
+    first_thread_id = nil
+    allow(session).to receive(:[]).and_call_original
+    allow(session).to receive(:[]).with(:access_token) do
+      first_thread_id = Thread.current.object_id if first_thread_id.nil?
+      if first_thread_id == Thread.current.object_id
+        order.token
+      else
+        order2.token
+      end
+    end
+    allow(session).to receive(:[]).with(:order_id) do
+      first_thread_id = Thread.current.object_id if first_thread_id.nil?
+      if first_thread_id == Thread.current.object_id
+        order.id
+      else
+        order2.id
+      end
+    end
+
+    allow(controller).to receive(:current_order) do
+      first_thread_id = Thread.current.object_id if first_thread_id.nil?
+      if first_thread_id == Thread.current.object_id
+        order
+      else
+        order2
+      end
+    end
+
+    # New threads start running straight away. The breakpoint is after loading
+    # the order and before advancing the order's state and making payments.
+    breakpoint.lock
+    expect(controller).to receive(:fire_event).with("spree.checkout.update") do
+      breakpoint.synchronize {}
+      # This is what fire_event does.
+      # I did not find out how to call the original code otherwise.
+      ActiveSupport::Notifications.instrument("spree.checkout.update")
+    end
+
+    thread1_response = ""
+    thread2_response = ""
+    threads = [
+      Thread.new do
+        spree_post :update, format: :json, order: order_params
+        thread1_response = response.dup
+      end,
+      Thread.new do
+        spree_post :update, format: :json, order: order_params.
+          merge(shipping_method_id: shipping_method.id)
+        thread2_response = response.dup
+      end
+    ]
+    # Let the threads run again. They should not be in a race condition.
+    breakpoint.unlock
+    # Wait for both threads to finish.
+    threads.each(&:join)
+    order.reload
+    order2.reload
+
+    expect(thread1_response.status).to eq(200)
+    expect(thread2_response.status).to_not eq(200)
+    expect(thread1_response.body).to eq({ path: spree.order_path(order) }.to_json)
+    expect(order.payments.count).to eq 1
+    expect(order.completed?).to be true
+    expect(order2.completed?).to be false
   end
 end
