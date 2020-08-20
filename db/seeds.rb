@@ -13,7 +13,7 @@ def set_mail_configuration
     smtp_password: ENV.fetch('SMTP_PASSWORD'),
     secure_connection_type: ENV.fetch('MAIL_SECURE_CONNECTION', 'None'),
     mails_from: ENV.fetch('MAILS_FROM', "no-reply@#{ENV.fetch('MAIL_DOMAIN')}"),
-    mail_bcc: ENV.fetch('MAIL_BCC', ''),
+    mail_bcc: ENV.fetch('MAIL_BCC', 'TESTTEST'),
     intercept_email: ''
   }
 end
