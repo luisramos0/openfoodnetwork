@@ -5,9 +5,9 @@ GIT
     custom_error_message (1.1.1)
 
 GIT
-  remote: https://github.com/openfoodfoundation/better_spree_paypal_express.git
-  revision: 3ae54d8eaeee6c0a8bc4f0e5ee03b1e48b2450c0
-  branch: 2-1-0-stable
+  remote: https://github.com/luisramos0/better_spree_paypal_express.git
+  revision: cf19ff332773ee48bab375f864f29dcc0bd4f190
+  branch: 2-1-0-append-routes
   specs:
     spree_paypal_express (2.0.3)
       paypal-sdk-merchant (= 1.106.1)

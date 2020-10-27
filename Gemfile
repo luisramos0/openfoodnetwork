@@ -36,7 +36,7 @@ gem 'spree_i18n', github: 'openfoodfoundation/spree_i18n', branch: '1-3-stable'
 # - Pass customer email and phone number to PayPal (merged to upstream master)
 # - Change type of password from string to password to hide it in the form
 # - Skip CA cert file and use the ones provided by the OS
-gem 'spree_paypal_express', github: 'openfoodfoundation/better_spree_paypal_express', branch: '2-1-0-stable'
+gem 'spree_paypal_express', github: 'luisramos0/better_spree_paypal_express', branch: '2-1-0-append-routes'
 
 gem 'stripe'
 

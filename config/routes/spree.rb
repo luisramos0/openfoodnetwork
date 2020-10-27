@@ -46,6 +46,7 @@ Spree::Core::Engine.routes.draw do
 
   resources :credit_cards
 
+
   namespace :admin do
     get '/search/known_users' => "search#known_users", :as => :search_known_users
     get '/search/customers' => 'search#customers', :as => :search_customers
@@ -107,6 +108,8 @@ Spree::Core::Engine.routes.draw do
       resources :payments do
         member do
           put :fire
+          get 'paypal_refund'
+          post 'paypal_refund'
         end
       end
 
@@ -173,4 +176,8 @@ Spree::Core::Engine.routes.draw do
   get '/checkout/:state', :to => 'checkout#edit', :as => :checkout_state
   get '/content/cvv', :to => 'content#cvv', :as => :cvv
   get '/content/*path', :to => 'content#show', :as => :content
+  get '/paypal', :to => "paypal#express", :as => :paypal_express
+  get '/paypal/confirm', :to => "paypal#confirm", :as => :confirm_paypal
+  get '/paypal/cancel', :to => "paypal#cancel", :as => :cancel_paypal
+  get '/paypal/notify', :to => "paypal#notify", :as => :notify_paypal
 end
