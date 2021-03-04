@@ -406,7 +406,8 @@ GEM
     get_process_mem (0.2.5)
       ffi (~> 1.0)
     gmaps4rails (1.5.6)
-    haml (4.0.7)
+    haml (5.2.1)
+      temple (>= 0.8.0)
       tilt
     hashdiff (1.0.1)
     highline (1.6.18)
@@ -637,6 +638,7 @@ GEM
     state_machine (1.2.0)
     stringex (1.5.1)
     stripe (5.15.0)
+    temple (0.8.2)
     test-unit (3.3.5)
       power_assert
     thor (0.20.3)
