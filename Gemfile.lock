@@ -553,7 +553,7 @@ GEM
     redcarpet (3.5.0)
     request_store (1.4.1)
       rack (>= 1.4)
-    rexml (3.2.4)
+    rexml (3.2.5)
     roadie (3.4.0)
       css_parser (~> 1.4)
       nokogiri (~> 1.5)
