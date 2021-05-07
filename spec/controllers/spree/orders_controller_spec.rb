@@ -5,6 +5,7 @@ require 'spec_helper'
 describe Spree::OrdersController, type: :controller do
   include OpenFoodNetwork::EmailHelper
   include CheckoutHelper
+  include StripeStubs
 
   let(:distributor) { double(:distributor) }
   let(:order) { create(:order) }
@@ -148,6 +149,27 @@ describe Spree::OrdersController, type: :controller do
         before do
           allow(payment).to receive(:response_code).and_return("invalid")
           allow(OrderPaymentFinder).to receive(:new).with(order).and_return(finder)
+        end
+
+        it "does not complete the payment" do
+          get :show, params: { id: order.number, payment_intent: payment_intent }
+
+          expect(response.status).to eq 200
+
+          payment.reload
+          expect(payment.cvv_response_message).to eq("https://stripe.com/redirect")
+          expect(payment.state).to eq("pending")
+        end
+      end
+
+      context "with an invalid last payment" do
+        let(:payment_intent) { "valid" }
+        let(:finder) { instance_double(OrderPaymentFinder, last_payment: payment) }
+
+        before do
+          allow(payment).to receive(:response_code).and_return("invalid")
+          allow(OrderPaymentFinder).to receive(:new).with(order).and_return(finder)
+          stub_payment_intent_get_request(payment_intent_id: "valid")
         end
 
         it "does not complete the payment" do
