@@ -24,8 +24,6 @@ module Stripe
       }
 
       before do
-        Stripe.api_key = "sk_test_12345"
-
         stub_customers_post_request email: credit_card.user.email,
                                     response: { customer_id: new_customer_id },
                                     stripe_account_header: true

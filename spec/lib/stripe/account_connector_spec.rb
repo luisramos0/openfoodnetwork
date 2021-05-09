@@ -14,10 +14,6 @@ module Stripe
       let(:params) { { "state" => state } }
       let(:connector) { AccountConnector.new(user, params) }
 
-      before do
-        Stripe.api_key = "sk_test_12345"
-      end
-
       context "when the connection was cancelled by the user" do
         before do
           params[:action] = "connect_callback"

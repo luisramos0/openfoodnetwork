@@ -11,11 +11,6 @@ describe StripeAccount do
     let(:stripe_user_id) { 'acct_abc123' }
     let!(:stripe_account) { create(:stripe_account, enterprise: enterprise, stripe_user_id: stripe_user_id) }
 
-    before do
-      Stripe.api_key = "sk_test_12345"
-      Stripe.client_id = client_id
-    end
-
     context "when the Stripe API disconnect fails" do
       before do
         stub_request(:post, "https://connect.stripe.com/oauth/deauthorize").

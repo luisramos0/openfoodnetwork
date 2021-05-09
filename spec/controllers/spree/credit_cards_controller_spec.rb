@@ -7,7 +7,6 @@ describe Spree::CreditCardsController, type: :controller do
   let(:token) { "tok_234bd2c22" }
 
   before do
-    Stripe.api_key = "sk_test_12345"
     allow(controller).to receive(:spree_current_user) { user }
   end
 

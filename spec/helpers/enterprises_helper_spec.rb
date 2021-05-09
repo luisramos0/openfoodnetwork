@@ -266,7 +266,6 @@ describe EnterprisesHelper, type: :helper do
 
         before do
           Spree::Config.set(stripe_connect_enabled: true)
-          Stripe.publishable_key = "some_key"
         end
 
         it "includes Stripe payment methods with a valid stripe accounts" do

@@ -74,6 +74,10 @@ require "paperclip/matchers"
 # Override setting in Spree engine: Spree::Core::MailSettings
 ActionMailer::Base.default_url_options[:host] = 'test.host'
 
+Stripe.api_key = "sk_test_xxxxx"
+Stripe.client_id = "some_id"
+Stripe.publishable_key = "pk_test_xxxxx"
+
 require "view_component/test_helpers"
 
 RSpec.configure do |config|

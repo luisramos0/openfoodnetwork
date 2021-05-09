@@ -153,7 +153,6 @@ describe CheckoutController, type: :controller do
         }
 
         before do
-          Stripe.api_key = "sk_test_12345"
           stub_payment_intent_get_request
           stub_successful_capture_request(order: order)
 

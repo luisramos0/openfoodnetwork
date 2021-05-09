@@ -5,10 +5,6 @@ require 'spec_helper'
 describe Admin::StripeAccountsController, type: :controller do
   let(:enterprise) { create(:distributor_enterprise) }
 
-  before do
-    Stripe.client_id = "some_id"
-  end
-
   describe "#connect" do
     before do
       allow(controller).to receive(:spree_current_user) { enterprise.owner }
@@ -86,7 +82,6 @@ describe Admin::StripeAccountsController, type: :controller do
     end
 
     before do
-      Stripe.api_key = "sk_test_12345"
       Spree::Config.set(stripe_connect_enabled: false)
     end
 

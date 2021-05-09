@@ -30,10 +30,6 @@ describe Spree::Admin::PaymentsController, type: :controller do
                            response_code: 'ch_1a2b3c', amount: order.total)
         end
 
-        before do
-          Stripe.api_key = "sk_test_12345"
-        end
-
         context "where the request succeeds" do
           before do
             stub_request(:post, "https://api.stripe.com/v1/charges/ch_1a2b3c/refunds").
@@ -87,10 +83,6 @@ describe Spree::Admin::PaymentsController, type: :controller do
         let!(:payment) do
           create(:payment, order: order, state: 'completed', payment_method: payment_method,
                            response_code: 'ch_1a2b3c', amount: order.total + 5)
-        end
-
-        before do
-          Stripe.api_key = "sk_test_12345"
         end
 
         context "where the request succeeds" do
@@ -152,7 +144,6 @@ describe Spree::Admin::PaymentsController, type: :controller do
         let(:stripe_account) { create(:stripe_account, enterprise: shop) }
 
         before do
-          Stripe.api_key = "sk_test_12345"
           allow(StripeAccount).to receive(:find_by) { stripe_account }
         end
 
@@ -236,8 +227,6 @@ describe Spree::Admin::PaymentsController, type: :controller do
         end
 
         before do
-          Stripe.api_key = "sk_test_12345"
-
           stub_payment_intent_get_request stripe_account_header: false
         end
 

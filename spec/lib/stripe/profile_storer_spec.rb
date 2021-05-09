@@ -14,8 +14,6 @@ module Stripe
       let(:customer_response_mock) { { status: 200, body: customer_response_body } }
 
       before do
-        Stripe.api_key = "sk_test_12345"
-
         stub_request(:post, "https://api.stripe.com/v1/customers")
           .with(basic_auth: ["sk_test_12345", ""], body: { email: payment.order.email })
           .to_return(customer_response_mock)

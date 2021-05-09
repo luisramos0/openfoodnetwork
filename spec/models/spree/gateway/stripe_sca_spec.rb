@@ -3,8 +3,6 @@
 require 'spec_helper'
 
 describe Spree::Gateway::StripeSCA, type: :model do
-  before { Stripe.api_key = "sk_test_12345" }
-
   describe "#purchase" do
     let(:order) { create(:order_with_totals_and_distribution) }
     let(:credit_card) { create(:credit_card) }
